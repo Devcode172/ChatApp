@@ -1,0 +1,14 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "editor.inlineSuggest.minShowDelay": 0,
+  "editor.inlineSuggest.showToolbar": "onHover",
+  "editor.inlineSuggest.syntaxHighlightingEnabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "scminput": false
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.nextEditSuggestions.fixes": true
+}
