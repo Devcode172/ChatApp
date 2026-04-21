@@ -65,10 +65,10 @@ const User = ({ user, showChatMeta = true }) => {
         </div>
       </div>
       {showChatMeta ? (
-        <div className='flex w-full items-start justify-between gap-3'>
-          <div className='min-w-0'>
-            <p className='w-[13vw] whitespace-nowrap text-ellipsis overflow-hidden'>{user.full_name}</p>
-            <p className='w-[13vw] whitespace-nowrap text-ellipsis overflow-hidden text-sm text-gray-400'>
+        <div className='flex w-full items-start justify-between gap-3 overflow-hidden'>
+          <div className='min-w-0 flex-1'>
+            <p className='truncate'>{user.full_name}</p>
+            <p className='truncate text-sm text-gray-400'>
               {previewText}
             </p>
           </div>
@@ -84,9 +84,9 @@ const User = ({ user, showChatMeta = true }) => {
           </div>
         </div>
       ) : (
-        <div>
-          <p className='w-[13vw] whitespace-nowrap text-ellipsis overflow-hidden'>{user.full_name} <span className='text-gray-400 italic'>{`[${user.username.toLowerCase()}]`}</span></p>
-          <p className='w-[13vw] italic whitespace-nowrap text-ellipsis overflow-hidden text-gray-400'>
+        <div className='min-w-0 flex-1 overflow-hidden'>
+          <p className='truncate'>{user.full_name} <span className='text-gray-400 italic'>{`[${user.username.toLowerCase()}]`}</span></p>
+          <p className='truncate italic text-gray-400'>
             {isOnline ? 'Online' : 'Offline'}
           </p>
         </div>

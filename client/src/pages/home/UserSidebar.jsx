@@ -68,19 +68,18 @@ const UserSidebar = () => {
       <div className='h-screen overflow-y-scroll flex flex-col gap-5'>
         {sortedUsers.map((user) => <User key={user.user_id} user={user} />)}
       </div>
-      <div className=' border-t-1 h-[16vh] flex items-center gap-15 pl-5 rounded-lg'>
-        <div className='flex items-center gap-5'>
-          <div className="avatar ">
-            <div className="ring-primary ring-offset-base-100 w-14 rounded-full ring-2 ring-offset-2">
-              <img src={avatarPath} />
+      <div className='border-t border-gray-600 h-[16vh] flex items-center justify-between px-2 rounded-lg'>
+        <div className='flex items-center gap-3 overflow-hidden'>
+          <div className="avatar shrink-0">
+            <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2">
+              <img src={avatarPath} alt="avatar" />
             </div>
           </div>
-          <h1 className='w-[8vw] whitespace-nowrap text-ellipsis overflow-hidden text-[25px] italic'>{userProfile?.full_name}</h1>
+          <h1 className='flex-1 truncate text-lg font-semibold italic'>{userProfile?.full_name}</h1>
         </div>
 
-
-        <div>
-          <input type="button" onClick={handleLogout} value="LogOut" className="btn  border-1 border-[#2b80ff] mr-2" />
+        <div className="shrink-0">
+          <input type="button" onClick={handleLogout} value="LogOut" className="btn btn-sm border-1 border-[#2b80ff]" />
         </div>
       </div>
     </div>

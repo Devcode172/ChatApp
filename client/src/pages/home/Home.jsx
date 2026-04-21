@@ -75,9 +75,13 @@ const Home = () => {
   if(!userProfile) return null
   
   return (
-    <div className='flex gap-4'>
-      <UserSidebar/>
-      <MessageContainer/>
+    <div className='flex h-screen overflow-hidden'>
+      <div className={`w-full md:w-1/3 lg:w-1/4 h-full ${selectedUser ? 'hidden md:block' : 'block'}`}>
+        <UserSidebar/>
+      </div>
+      <div className={`w-full md:w-2/3 lg:w-3/4 h-full ${selectedUser ? 'block' : 'hidden md:block'}`}>
+        <MessageContainer/>
+      </div>
     </div>
   )
 }

@@ -8,6 +8,8 @@ import { useEffect, useRef } from 'react';
 import { getMessageThunk } from '../../store/slice/message/message.thunk';
 import { clearMessages } from '../../store/slice/message/message.slice';
 import SendMessage from './SendMessage';
+import { setSelectedUser } from '../../store/slice/user/user.slice';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const MessageContainer = () => {
   const {selectedUser} = useSelector((state) => state.user)
@@ -42,9 +44,19 @@ const MessageContainer = () => {
     ) : (
       <div className='w-full flex flex-col h-screen'>
 
-      <div>  <User user = {selectedUser} showChatMeta={false} />
+      <div className='flex items-center p-2 border-b border-gray-700 bg-base-100'>
+        <button 
+          className='md:hidden btn btn-ghost btn-circle mr-2'
+          onClick={() => dispatch(setSelectedUser(null))}
+        >
+          <FaArrowLeft size={20} />
+        </button>
+        <div className='flex-1'>
+          <User user={selectedUser} showChatMeta={false} />
+        </div>
+      </div>
       
-       </div>
+
 
 
 
