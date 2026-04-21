@@ -1,16 +1,15 @@
 import React from 'react'
 import User from './User'
-import { useDispatch } from 'react-redux'
-import { userLogoutThunk } from '../../store/slice/user/user.thunk'
-import { useSelector } from 'react-redux'
-import { getOtherUserProfileThunk } from '../../store/slice/user/user.thunk'
-import { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogoutThunk, getOtherUserProfileThunk, searchUsersThunk } from '../../store/slice/user/user.thunk'
+import { useEffect, useMemo, useState } from 'react'
 
 
 const UserSidebar = () => {
   const dispatch = useDispatch()
-  const { otherUsers, userProfile, unreadMessages } = useSelector((state) => state.user)
+  const { otherUsers, userProfile, unreadMessages, searchResults, isSearching } = useSelector((state) => state.user)
   const { onlineUsers } = useSelector((state) => state.socket)
+  const [searchQuery, setSearchQuery] = useState('')
   const handleLogout = async () => {
     await dispatch(userLogoutThunk())
     //  navigate('/login')
@@ -23,9 +22,17 @@ const UserSidebar = () => {
   }
 
   useEffect(() => {
-
     dispatch(getOtherUserProfileThunk())
   }, [dispatch])
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim()) {
+        dispatch(searchUsersThunk(searchQuery))
+      }
+    }, 500)
+    return () => clearTimeout(delayDebounceFn)
+  }, [searchQuery, dispatch])
 
   const sortedUsers = useMemo(() => {
     if (!otherUsers) return []
@@ -52,21 +59,59 @@ const UserSidebar = () => {
     })
   }, [otherUsers, onlineUsers, unreadMessages])
 
+  const filteredExistingUsers = useMemo(() => {
+    if (!searchQuery.trim()) return sortedUsers;
+    const lowerQuery = searchQuery.trim().toLowerCase();
+    return sortedUsers.filter(u => 
+      u.full_name.toLowerCase().includes(lowerQuery) || 
+      u.username.toLowerCase().includes(lowerQuery)
+    );
+  }, [sortedUsers, searchQuery]);
+
+  const combinedSearchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    
+    const existingIds = new Set(filteredExistingUsers.map(u => u.user_id));
+    const newGlobalUsers = (searchResults || []).filter(u => !existingIds.has(u.user_id));
+    
+    return [...filteredExistingUsers, ...newGlobalUsers];
+  }, [filteredExistingUsers, searchResults, searchQuery]);
+
+  const onlineContactsCount = useMemo(() => {
+    if (!sortedUsers || !onlineUsers) return 0;
+    return sortedUsers.filter(user => onlineUsers.includes(String(user.user_id))).length;
+  }, [sortedUsers, onlineUsers]);
+
   return (
     <div className='h-full border-r-[0.1px] border-gray-600  p-2 relative flex flex-col'>
       <div className='text-blue-500 text-center text-2xl font-bold'>
         Talk Nest
       </div>
 
-      <div className='my-2'>
-
-        <input type="text" placeholder="Search Contact" className="input w-full " />
+      <div className='my-2 relative'>
+        <input 
+          type="text" 
+          placeholder="Search Contact" 
+          className="input w-full " 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        {isSearching && (
+          <span className="loading loading-spinner loading-sm absolute right-3 top-3 text-blue-500"></span>
+        )}
       </div>
       <p className='mb-3 text-sm text-gray-400'>
-        {onlineUsers?.length -1 || 'No'} {onlineUsers.length - 1 > 1 ? 'users online' : 'user online'}
+        {searchQuery.trim() ? (
+          `Found ${combinedSearchResults.length} users`
+        ) : (
+          `${onlineContactsCount || 'No'} ${onlineContactsCount === 1 ? 'contact online' : 'contacts online'}`
+        )}
       </p>
       <div className='flex-1 overflow-y-auto flex flex-col gap-5'>
-        {sortedUsers.map((user) => <User key={user.user_id} user={user} />)}
+        {searchQuery.trim() 
+          ? combinedSearchResults.map((user) => <User key={user.user_id} user={user} />)
+          : sortedUsers.map((user) => <User key={user.user_id} user={user} />)
+        }
       </div>
       <div className='border-t border-gray-600 h-[16vh] flex items-center justify-between px-2 rounded-lg'>
         <div className='flex items-center gap-3 overflow-hidden'>

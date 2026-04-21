@@ -94,6 +94,16 @@ export const getOtherUserProfileThunk = createAsyncThunk(
   }
 );
 
-      
-
-       
+export const searchUsersThunk = createAsyncThunk(
+  'user/search',
+  async (searchQuery, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/user/search?q=${searchQuery}`);
+      return response.data;
+    } catch (error) {
+      console.log('error', error.response?.data?.message);
+      const errorOutput = error.response?.data?.message || 'Failed to search users';
+      return rejectWithValue(errorOutput);
+    }
+  }
+);

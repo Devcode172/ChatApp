@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { userLoginThunk , userRegisterThunk, userLogoutThunk, getUserProfileThunk, getOtherUserProfileThunk} from './user.thunk'
+import { userLoginThunk , userRegisterThunk, userLogoutThunk, getUserProfileThunk, getOtherUserProfileThunk, searchUsersThunk } from './user.thunk'
 
 
 export const userSlice = createSlice({
@@ -10,6 +10,8 @@ export const userSlice = createSlice({
         buttonloading : false,
         screenLoading : true,
         otherUsers : null,
+        searchResults : null,
+        isSearching : false,
         selectedUser : localStorage.getItem('selectedUser') ? JSON.parse(localStorage.getItem('selectedUser')) : null,
         unreadMessages : {}
         // selectedUser : null
@@ -97,6 +99,8 @@ export const userSlice = createSlice({
       state.isAuthenticated = false
       state.userProfile = null
       state.otherUsers = null
+      state.searchResults = null
+      state.isSearching = false
       state.selectedUser = null
       state.unreadMessages = {}
       state.buttonloading = false
@@ -144,6 +148,18 @@ export const userSlice = createSlice({
       // Add user to the state array
       state.screenLoading = false
       console.log('rejected')
+    })
+
+    builder.addCase(searchUsersThunk.pending, (state) => {
+      state.isSearching = true
+    })
+    builder.addCase(searchUsersThunk.fulfilled, (state, action) => {
+      state.isSearching = false
+      state.searchResults = action.payload.data
+    })
+    builder.addCase(searchUsersThunk.rejected, (state) => {
+      state.isSearching = false
+      state.searchResults = null
     })
   },
 })
