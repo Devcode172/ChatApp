@@ -75,7 +75,7 @@ const Home = () => {
   if(!userProfile) return null
   
   return (
-    <div className='flex h-screen overflow-hidden'>
+    <div className='flex h-dvh overflow-hidden'>
       <div className={`w-full md:w-1/3 lg:w-1/4 h-full ${selectedUser ? 'hidden md:block' : 'block'}`}>
         <UserSidebar/>
       </div>
