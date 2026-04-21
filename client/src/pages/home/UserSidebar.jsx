@@ -53,7 +53,7 @@ const UserSidebar = () => {
   }, [otherUsers, onlineUsers, unreadMessages])
 
   return (
-    <div className='h-screen border-r-[0.1px] border-gray-600  p-2 relative flex flex-col'>
+    <div className='h-full border-r-[0.1px] border-gray-600  p-2 relative flex flex-col'>
       <div className='text-blue-500 text-center text-2xl font-bold'>
         Talk Nest
       </div>
@@ -65,7 +65,7 @@ const UserSidebar = () => {
       <p className='mb-3 text-sm text-gray-400'>
         {onlineUsers?.length -1 || 'No'} {onlineUsers.length - 1 > 1 ? 'users online' : 'user online'}
       </p>
-      <div className='h-screen overflow-y-scroll flex flex-col gap-5'>
+      <div className='flex-1 overflow-y-auto flex flex-col gap-5'>
         {sortedUsers.map((user) => <User key={user.user_id} user={user} />)}
       </div>
       <div className='border-t border-gray-600 h-[16vh] flex items-center justify-between px-2 rounded-lg'>

@@ -38,11 +38,11 @@ const MessageContainer = () => {
   return (
     <>
     {!selectedUser ? (
-      <div className='w-full h-screen flex items-center justify-center'>
+      <div className='w-full h-full flex items-center justify-center'>
         <h1 className='text-2xl'>Select a user to start chatting</h1>
       </div>
     ) : (
-      <div className='w-full flex flex-col h-screen'>
+      <div className='w-full flex flex-col h-full'>
 
       <div className='flex items-center p-2 border-b border-gray-700 bg-base-100'>
         <button 
