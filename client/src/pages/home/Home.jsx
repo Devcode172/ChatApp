@@ -17,6 +17,11 @@ const Home = () => {
   useEffect(() => {
      if(!isAuthenticated || !userProfile?.user_id) return
      dispatch(initializeSocket(userProfile.user_id))
+
+     // Request OS notification permissions
+     if ("Notification" in window && Notification.permission === "default") {
+       Notification.requestPermission()
+     }
   }, [dispatch, isAuthenticated, userProfile?.user_id])
 
   useEffect(() => {
@@ -62,7 +67,18 @@ const Home = () => {
       dispatch(incrementUnreadMessages(newMessage.sender_id))
 
       const sender = otherUsers?.find((user) => user.user_id === newMessage.sender_id)
-      toast.success(`New message from ${sender?.full_name || 'someone'}`)
+      const senderName = sender?.full_name || 'someone'
+      
+      // In-app toast notification
+      toast.success(`New message from ${senderName}`)
+
+      // OS-level Desktop/Mobile notification
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(`Message from ${senderName}`, {
+          body: newMessage.content,
+          icon: '/TalkNest_logo.png' // Using default logo or fallback since avatar paths are complex
+        })
+      }
     }
 
     socket.on('newMessage', handleNewMessage)
