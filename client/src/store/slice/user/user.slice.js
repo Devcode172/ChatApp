@@ -18,7 +18,9 @@ export const userSlice = createSlice({
         setSelectedUser : (state, action) => {
           localStorage.setItem('selectedUser', JSON.stringify(action.payload))
             state.selectedUser = action.payload
-            delete state.unreadMessages[action.payload.user_id]
+            if (action.payload?.user_id) {
+              delete state.unreadMessages[action.payload.user_id]
+            }
         },
         incrementUnreadMessages : (state, action) => {
           const senderId = action.payload
