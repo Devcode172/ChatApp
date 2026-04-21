@@ -9,12 +9,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/TalkNest_logo.png",
+      "src": "/AV1.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/TalkNest_logo.png",
+      "src": "/AV1.png",
       "sizes": "512x512",
       "type": "image/png"
     }

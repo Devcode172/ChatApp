@@ -126,7 +126,7 @@ const Home = () => {
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification(`Message from ${senderName}`, {
           body: newMessage.content,
-          icon: '/TalkNest_logo.png' // Using default logo or fallback since avatar paths are complex
+          icon: '/AV1.png' // Using default logo or fallback since avatar paths are complex
         })
       }
     }

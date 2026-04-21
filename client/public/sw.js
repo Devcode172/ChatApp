@@ -6,8 +6,8 @@ self.addEventListener('push', function(event) {
         const title = data.title || 'New Message'
         const options = {
             body: data.body,
-            icon: data.icon || '/TalkNest_logo.png',
-            badge: data.icon || '/TalkNest_logo.png',
+            icon: data.icon || '/AV1.png',
+            badge: data.icon || '/AV1.png',
             data: {
                 url: '/' // When clicked, it will open the chat app
             }
