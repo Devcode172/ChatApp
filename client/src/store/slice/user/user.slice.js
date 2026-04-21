@@ -44,6 +44,18 @@ export const userSlice = createSlice({
             user.last_message_sender_id = lastMessageSenderId
           }
         },
+        addNewConversationUser : (state, action) => {
+          const newUser = action.payload
+          if (state.otherUsers) {
+            // Check if they already exist just in case
+            const exists = state.otherUsers.some(u => u.user_id === newUser.user_id)
+            if (!exists) {
+              state.otherUsers.push(newUser)
+            }
+          } else {
+            state.otherUsers = [newUser]
+          }
+        },
     },
     extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -142,6 +154,16 @@ export const userSlice = createSlice({
       // Add user to the state array
       console.log('fulfilled', action.payload)
       state.otherUsers = action.payload.data
+
+      // Populate unread messages from persistent database counts
+      const unread = {}
+      action.payload.data.forEach(user => {
+        if (user.unread_count > 0) {
+          unread[user.user_id] = parseInt(user.unread_count, 10)
+        }
+      })
+      state.unreadMessages = unread
+
       state.screenLoading = false
     })
      builder.addCase(getOtherUserProfileThunk.rejected, (state, action) => {
@@ -164,6 +186,6 @@ export const userSlice = createSlice({
   },
 })
 // Action creators are generated for each case reducer function
-export const { setSelectedUser, incrementUnreadMessages, clearUnreadMessages, updateConversationPreview } = userSlice.actions
+export const { setSelectedUser, incrementUnreadMessages, clearUnreadMessages, updateConversationPreview, addNewConversationUser } = userSlice.actions
 
 export default userSlice.reducer  

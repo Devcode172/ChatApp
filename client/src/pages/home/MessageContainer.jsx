@@ -44,16 +44,25 @@ const MessageContainer = () => {
     ) : (
       <div className='w-full flex flex-col h-full'>
 
-      <div className='flex items-center p-2 border-b border-gray-700 bg-base-100'>
-        <button 
-          className='md:hidden btn btn-ghost btn-circle mr-2'
-          onClick={() => dispatch(setSelectedUser(null))}
-        >
-          <FaArrowLeft size={20} />
-        </button>
-        <div className='flex-1'>
-          <User user={selectedUser} showChatMeta={false} />
+      <div className='flex items-center p-2 border-b border-gray-700 bg-base-100 justify-between'>
+        <div className='flex items-center flex-1 overflow-hidden'>
+          <button 
+            className='md:hidden btn btn-ghost btn-circle mr-2'
+            onClick={() => dispatch(setSelectedUser(null))}
+          >
+            <FaArrowLeft size={20} />
+          </button>
+          <div className='flex-1'>
+            <User user={selectedUser} showChatMeta={false} />
+          </div>
         </div>
+        <button
+          className='hidden md:flex btn btn-ghost btn-circle ml-2 text-gray-400 hover:text-white'
+          onClick={() => dispatch(setSelectedUser(null))}
+          title="Close chat"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
       </div>
       
 

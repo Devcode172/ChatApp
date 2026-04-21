@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { setSelectedUser } from '../../store/slice/user/user.slice'
+import { markMessagesAsReadThunk } from '../../store/slice/user/user.thunk'
 import { useSelector } from 'react-redux'
 
 const formatLastMessageTime = (value) => {
@@ -52,6 +53,7 @@ const User = ({ user, showChatMeta = true }) => {
 
   const handleUseClick = () => {
     dispatch(setSelectedUser(user))
+    dispatch(markMessagesAsReadThunk(user.user_id))
   }
 
   return (

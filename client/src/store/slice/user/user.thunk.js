@@ -107,3 +107,17 @@ export const searchUsersThunk = createAsyncThunk(
     }
   }
 );
+
+export const markMessagesAsReadThunk = createAsyncThunk(
+  'message/markRead',
+  async (senderId, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/message/mark-read/${senderId}`);
+      return response.data;
+    } catch (error) {
+      console.log('error', error.response?.data?.message);
+      const errorOutput = error.response?.data?.message || 'Failed to mark messages as read';
+      return rejectWithValue(errorOutput);
+    }
+  }
+);

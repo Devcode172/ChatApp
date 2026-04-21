@@ -150,7 +150,8 @@ export const getOtherUsers = async (req, res) => {
                 users.*,
                 latest_message.content AS last_message,
                 latest_message.created_at AS last_message_at,
-                latest_message.sender_id AS last_message_sender_id
+                latest_message.sender_id AS last_message_sender_id,
+                COALESCE(unread.count, 0) AS unread_count
             FROM users
             INNER JOIN LATERAL (
                 SELECT messages.content, messages.created_at, messages.sender_id
@@ -164,6 +165,16 @@ export const getOtherUsers = async (req, res) => {
                 ORDER BY messages.created_at DESC, messages.id DESC
                 LIMIT 1
             ) latest_message ON true
+            LEFT JOIN LATERAL (
+                SELECT COUNT(*)::integer AS count
+                FROM conversations
+                JOIN messages ON messages.conversation_id = conversations.id
+                WHERE ((conversations.user1_id = $1 AND conversations.user2_id = users.user_id)
+                   OR (conversations.user1_id = users.user_id AND conversations.user2_id = $1))
+                  AND messages.receiver_id = $1
+                  AND messages.sender_id = users.user_id
+                  AND messages.is_read = false
+            ) unread ON true
             WHERE users.user_id != $1
             ORDER BY latest_message.created_at DESC NULLS LAST, users.full_name ASC
         `
@@ -216,6 +227,38 @@ export const searchUsers = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+}
+
+export const subscribeToPush = async (req, res) => {
+    try {
+        const username = req.user
+        const { subscription } = req.body
+
+        if (!subscription) {
+            return res.status(400).json({ message: 'Subscription object is required' })
+        }
+
+        const query = `
+            UPDATE users 
+            SET push_subscription = $1 
+            WHERE username = $2 
+            RETURNING user_id
+        `
+        const result = await pool.query(query, [subscription, username])
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        return res.status(200).json({
+            message: 'Push subscription saved successfully'
+        })
+    } catch (error) {
+        console.log('Error saving push subscription:', error)
         return res.status(500).json({
             message: 'Internal Server Error'
         })
