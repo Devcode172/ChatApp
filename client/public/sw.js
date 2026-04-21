@@ -38,11 +38,7 @@ self.addEventListener('notificationclick', function(event) {
 })
 
 // A basic fetch handler is required for some browsers (like Chrome) to trigger the PWA "Add to Home Screen" prompt.
-// This simple pass-through fetch does not cache aggressively, but satisfies the PWA installability requirements.
+// We keep it empty to just pass the PWA requirement without interfering with network requests.
 self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        fetch(event.request).catch(function() {
-            // Optional: return cached offline fallback page here if implemented
-        })
-    )
+    // Do nothing. The browser will handle the request normally.
 })
