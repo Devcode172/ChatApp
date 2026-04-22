@@ -14,8 +14,8 @@ export const userLoginThunk = createAsyncThunk(
      return response.data
     }
     catch (error) {
-        console.log('error', error.response.data.message)
-        const errorOuput = error.response.data.message
+        console.log('error', error.response?.data?.message)
+        const errorOuput = error.response?.data?.message || 'Login failed'
         toast.error(errorOuput)
         return rejectWithValue(errorOuput) 
        }    
@@ -39,8 +39,8 @@ export const userRegisterThunk = createAsyncThunk(
      return response.data
     }
     catch (error) {
-        console.log('error', error.response.data.message)
-        const errorOuput = error.response.data.message
+        console.log('error', error.response?.data?.message)
+        const errorOuput = error.response?.data?.message || 'Registration failed'
         toast.error(errorOuput)
         return rejectWithValue(errorOuput) 
        }    
@@ -56,8 +56,8 @@ export const userLogoutThunk = createAsyncThunk(
       toast.success('Logged out successfully');
       return response.data;
     } catch (error) {
-      console.log('error', error.response.data.message);
-      const errorOutput = error.response.data.message;
+      console.log('error', error.response?.data?.message);
+      const errorOutput = error.response?.data?.message || 'Logout failed';
       toast.error(errorOutput);
       return rejectWithValue(errorOutput);
     }
@@ -71,8 +71,8 @@ export const getUserProfileThunk = createAsyncThunk(
       const response = await axiosInstance.get('/user/getprofile');
       return response.data;
     } catch (error) {
-      console.log('error', error.response.data.message);
-      const errorOutput = error.response.data.message;
+      console.log('error', error.response?.data?.message);
+      const errorOutput = error.response?.data?.message || 'Failed to fetch profile';
     //   toast.error(errorOutput);
       return rejectWithValue(errorOutput);
     }
@@ -86,8 +86,8 @@ export const getOtherUserProfileThunk = createAsyncThunk(
       const response = await axiosInstance.get('/user/getotherusers');
       return response.data;
     } catch (error) {
-      console.log('error', error.response.data.message);
-      const errorOutput = error.response.data.message;
+      console.log('error', error.response?.data?.message);
+      const errorOutput = error.response?.data?.message || 'Failed to fetch users';
     //   toast.error(errorOutput);
       return rejectWithValue(errorOutput);
     }

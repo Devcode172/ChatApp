@@ -14,8 +14,8 @@ export const sendMessageThunk = createAsyncThunk(
      return response.data
     }
     catch (error) {
-        console.log('error', error.response.data.message)
-        const errorOuput = error.response.data.message
+        console.log('error', error.response?.data?.message)
+        const errorOuput = error.response?.data?.message || 'Failed to send message'
         toast.error(errorOuput)
         return rejectWithValue(errorOuput) 
        }    
@@ -34,8 +34,8 @@ export const getMessageThunk = createAsyncThunk(
      return response.data
     }
     catch (error) {
-        console.log('error', error.response.data.message)
-        const errorOuput = error.response.data.message
+        console.log('error', error.response?.data?.message)
+        const errorOuput = error.response?.data?.message || 'Failed to get message'
         toast.error(errorOuput)
         return rejectWithValue(errorOuput) 
        }    
