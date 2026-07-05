@@ -117,7 +117,7 @@ const UserSidebar = () => {
         <div className='flex items-center gap-3 overflow-hidden'>
           <div className="avatar shrink-0">
             <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2">
-              <img src={avatarPath} alt="avatar" />
+              <img src={userProfile?.avatar} alt="avatar" />
             </div>
           </div>
           <h1 className='flex-1 truncate text-lg font-semibold italic'>{userProfile?.full_name}</h1>
