@@ -63,7 +63,7 @@ const User = ({ user, showChatMeta = true }) => {
     >
       <div className={`avatar ${isOnline ? 'avatar-online' : ''}`}>
         <div className="w-14 rounded-full">
-          <img src={avatarPath} />
+          <img src={user.avatar} />
         </div>
       </div>
       {showChatMeta ? (
